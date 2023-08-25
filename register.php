@@ -1,68 +1,104 @@
 <?php
 
     include 'header.php';
+    include 'database_conn.php';
+
+    $validationMessage = '';
+    $successMessage = '';
 
 
-    if(isset($_POST["register_button"]))
+    if(isset( $_POST["register"] ))
     {
-        $formdata = array();
 
-        if(empty($_POST["user_email_address"]))
+        if(empty($_POST['userName']))
         {
-            $message .= '<li>Email Address is required</li>';
+            $validationMessage .= '<li>User Name is required</li>';
         }
-        else
-        {
-            if(!filter_var($_POST["user_email_address"], FILTER_VALIDATE_EMAIL))
+       
+
+        if (!preg_match('/^(?=.*[0-9]{6,})(?=.*[a-zA-Z]{2,}).*$/', $_POST["password"])) {
+            $validationMessage .= '<li>Password must have at least 6 numbers and 2 letters</li>';
+        }
+
+        else {
+
+            if(empty($_POST["password"]))
             {
-                $message .= '<li>Invalid Email Address</li>';
+                $validationMessage .= '<li>Password is required</li>';
             }
-
-            else
-            {
-                $formdata['user_email_address'] = trim($_POST['user_email_address']);
-            }
-        }
-
-        if(empty($_POST["user_password"]))
-        {
-            $message .= '<li>Password is required</li>';
-        }
-        else
-        {
-            $formdata['user_password'] = trim($_POST['user_password']);
-        }
-
-        if(empty($_POST['user_name']))
-        {
-            $message .= '<li>User Name is required</li>';
-        }
-        else
-        {
-            $formdata['user_name'] = trim($_POST['user_name']);
         }
 
 	}
+
+    
+
+    if($validationMessage == '')
+    {
+
+        $userName = $_POST['userName'];
+        $password = $_POST['password'];
+        // $hashedPassword  = password_hash($password, PASSWORD_DEFAULT);
+
+
+        $startDate = date('Y-m-d H:i:s');
+        $endDate = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($currentDate)));
+    
+
+        $stmt = $pdo->prepare("INSERT INTO user (userName, password, startDate, endDate)
+                     VALUES (:userName, :password, :startDate,:endDate)");
+
+        $stmt->bindParam(':userName', $userName);
+        $stmt->bindParam(':password', $password);
+        $stmt->bindParam(':startDate', $startDate);
+        $stmt->bindParam(':endDate', $endDate);
+        $stmt->execute();
+
+        $successMessage = "Register Successfully";
+
+    }
+
 
 ?>
 
 <div class="container  d-flex justify-content-center vh-100 align-items-center">
 
+   
     <div class="card">
+
+        <?php
+
+            if($validationMessage != '')
+            {
+                echo '<div class="alert alert-danger"><ul>'.$validationMessage.'</ul></div>';
+            }
+
+            if($successMessage != '')
+            {
+                echo '<div class="alert alert-success">'.$successMessage.'</div>';
+            }
+            
+        ?>
         <div class="card-body">
+
             <form method="POST">
+
                 <div class="mb-3">
-                    <label for="exampleInputEmail1" class="form-label">Email address</label>
-                    <input type="email" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
+                    <label for="exampleInputEmail1" class="form-label">user name </label>
+                    <input type="" name="userName" class="form-control" id="exampleInputEmail1" aria-describedby="emailHelp">
                     <div id="emailHelp" class="form-text">We'll never share your email with anyone else.</div>
                 </div>
+
                 <div class="mb-3">
                     <label for="exampleInputPassword1" class="form-label">Password</label>
-                    <input type="password" class="form-control" id="exampleInputPassword1">
+                    <input type="password" name="password" class="form-control" id="exampleInputPassword1">
                 </div>
 
 
-                <button type="submit" class="btn btn-primary">Submit</button>
+                <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
+						<input type="submit" name="register" class="btn btn-primary" value="Login" />
+				</div>
+
+
             </form>
         </div>
     </div>
