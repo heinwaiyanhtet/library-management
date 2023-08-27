@@ -53,7 +53,7 @@
                         </button>
 
                         <p>
-                             <?php echo $book['isBorrowed'] ?  "ငှားရပြီး"  :  ""; ?> 
+                             <?php echo $book['isBorrowed'] ?  "ငှားရမ်းပြီး"  :  ""; ?> 
                         </p>
                        
                      </div>
@@ -86,8 +86,11 @@
                         type: 'POST',
                         url: 'update_borrow.php', // Create this PHP file
                         data: { id: id },
-                        success: function(response) {
-                                Swal.fire(
+
+                        success: function(response) 
+                        {
+
+                            Swal.fire(
                                 'Borrowed!',
                                 'Your have borrowed this.',
                                 'success'
