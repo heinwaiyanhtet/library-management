@@ -43,6 +43,7 @@
                     <div class="d-flex justify-content-between">
 
                      <button 
+
                             onclick="confrimBorrow
                             (
                                 <?php echo $book['id'] ?>
@@ -50,7 +51,8 @@
                              class="btn btn-outline-info btn-sm"
                                     <?php echo $book['isBorrowed'] ? 'disabled' : '' ?>
                              >Borrow<?php echo $book['isBorrowed'] ? 'ed' : '' ?>
-                        </button>
+                        
+                    </button>
 
                         <p>
                              <?php echo $book['isBorrowed'] ?  "ငှားရမ်းပြီး"  :  ""; ?> 
@@ -89,8 +91,9 @@
 
                         success: function(response) 
                         {
-
+                            // console.log(response);
                             Swal.fire(
+                                
                                 'Borrowed!',
                                 'Your have borrowed this.',
                                 'success'
