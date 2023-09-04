@@ -37,6 +37,8 @@
 
         $userName = $_POST['userName'];
         $password = $_POST['password'];
+
+        $role = 'user';
         // $hashedPassword  = password_hash($password, PASSWORD_DEFAULT);
 
 
@@ -44,13 +46,16 @@
         $endDate = date('Y-m-d H:i:s', strtotime('+1 month', strtotime($currentDate)));
     
 
-        $stmt = $pdo->prepare("INSERT INTO user (userName, password, startDate, endDate)
-                     VALUES (:userName, :password, :startDate,:endDate)");
+        $stmt = $pdo->prepare("INSERT INTO user (userName, password, startDate, endDate, role)
+                     VALUES (:userName, :password, :startDate,:endDate,:role)");
+
 
         $stmt->bindParam(':userName', $userName);
         $stmt->bindParam(':password', $password);
         $stmt->bindParam(':startDate', $startDate);
         $stmt->bindParam(':endDate', $endDate);
+        $stmt->bindParam(':role', $role);
+
         $stmt->execute();
 
         $successMessage = "Register Successfully";
@@ -95,7 +100,7 @@
 
 
                 <div class="d-flex align-items-center justify-content-between mt-4 mb-0">
-						<input type="submit" name="register" class="btn btn-primary" value="Login" />
+						<input type="submit" name="register" class="btn btn-primary" value="Register" />
 				</div>
 
 

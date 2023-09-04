@@ -9,7 +9,20 @@
 
         <a class="nav-link active" aria-current="page" href="index.php">Home</a>
         <a class="nav-link" href="/borrow.php"> borrow </a>
-        <a class="nav-link" href="#">Notification</a>
+        <a class="nav-link" href="/notification.php">Notification</a>
+
+        <?php
+
+
+          session_start();
+          if($_SESSION['role'] == 'admin')
+          { ?>
+          
+             <a class="nav-link" href="/userlist.php">userlist</a>
+        <?php
+          }
+        ?>
+        
         <!-- <a class="nav-link disabled" href="#" tabindex="-1" aria-disabled="true">Disabled</a> -->
       </div>
     </div>

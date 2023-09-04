@@ -1,59 +1,58 @@
 <?php
-    include 'database_conn.php'; 
+    include 'database_conn.php'; // Include your database connection file
     include 'function.php';
+
+    ini_set('display_errors', 1);
+error_reporting(E_ALL);
+
 
     if (isset($_POST['bookId']) and isset($_POST['borrowedId'])) 
     {
 
         try {
 
-        //  $bookQuery = 
-        //     "
-        //         UPDATE books
-        //         SET isBorrowed = false
-        //         WHERE id = :bookId;
-        //      ";
+         $bookQuery = 
+            "
+                UPDATE books
+                SET isBorrowed = false
+                WHERE id = :bookId;
+             ";
     
-        //     $statement = $pdo->prepare($bookQuery);
+            $statement = $pdo->prepare($bookQuery);
     
-        //     $bookId = $_POST['bookId'];
+            $bookId = $_POST['bookId'];
 
-        //     $statement->bindParam(':bookId', $bookId);
+            $statement->bindParam(':bookId', $bookId);
 
-        //     $statement->execute();
-            
-        
-            $currentDate = currentDate();
-            
-            $borrowedId = $_POST['borrowedId'];
-
-
-            // $currentDate =  date('Y-m-d H:i:s');
+            $statement->execute();
 
             $borrowQuery = 
             "
                 UPDATE borrowed
-                SET returnedDate = $currentDate
+                SET returnedDate = :currentDate
                 WHERE id = :borrowedId;
             ";
 
+            $statement = $pdo->prepare($borrowQuery);
 
-        $statement->bindParam(':borrowedId', $borrowedId);
+            $currentDate = currentDate();
+            $statement->bindParam(':currentDate', $currentDate);
 
-         $statement->execute();
-
-
-
-        } catch (PDOException $e) {
-            echo "Error: " . $e->getMessage();
-        }
-
-       
+            $borrowedId = $_POST['borrowedId'];
+            $statement->bindParam(':borrowedId', $borrowedId);
 
 
+            $statement->execute();
 
+
+            } catch (PDOException $e) {
+                echo "Error: " . $e->getMessage();
+            }
 
     }
 
 
+
+
 ?>
+

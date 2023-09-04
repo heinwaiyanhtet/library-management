@@ -13,9 +13,7 @@ if(!isset($_SESSION['user_id']))
     header('location:login.php'); 
 }
 
-
 try {
-
 
     $query = "
         SELECT b.id AS bookId, b.bookUrl, b.isBorrowed, br.id AS borrowedId, br.borrowedDate, br.returnedDate
@@ -35,7 +33,6 @@ try {
     $books = $statement->fetchAll(PDO::FETCH_ASSOC);
 
 ?>
-
 
  
 <section class="container-fluid mt-3">
@@ -57,25 +54,54 @@ try {
                   borrowedDate -  <?php echo $book['borrowedDate'] ?>
                 </p>
 
+                <p class="d-inline mb-0">
+                  returnedDate -  <p class="d-inline" id="returnedDate"> <?php echo $book['returnedDate'] ?> </p>
+                </p>
 
-            
                 <button 
+                        id = "returnedButton"
                         onclick="returnBorrowed
                             (
                                 <?php echo $book['bookId']; ?> ,
                                 <?php echo $book['borrowedId']; ?>
                             )" 
-                        class="btn btn-outline-info btn-sm">
-                    return
+                        class="
+                                btn btn-outline-info btn-sm
+                        "
+                    <?php echo $book['returnedDate'] != null ? 'disabled': '';?>
+                        
+                        >
+                    return<?php echo $book['returnedDate'] != null ? 'd': '';?>
+
                 </button>
 
-
             </div>
-        <?php }?>
+        </div>
+
+    </div>
+
+    <?php }?>
    
 </section> 
 
 <script>
+
+        function formatDate(date) {
+        const year = date.getFullYear();
+        const month = String(date.getMonth() + 1).padStart(2, '0');
+        const day = String(date.getDate()).padStart(2, '0');
+        const hours = String(date.getHours()).padStart(2, '0');
+        const minutes = String(date.getMinutes()).padStart(2, '0');
+        const seconds = String(date.getSeconds()).padStart(2, '0');
+
+        return `${year}-${month}-${day} ${hours}:${minutes}:${seconds}`;
+        }
+
+        const currentDate = new Date();
+        const formattedDate = formatDate(currentDate);
+
+
+
     function returnBorrowed(bookId,borrowedId)
     {
 
@@ -109,10 +135,20 @@ try {
                         success: function(response) 
                         {
 
+                            
+                            let returnButton = document.getElementById("returnedButton");
+                            returnButton.textContent = "returned";
+
+                            const currentDate = new Date();
+                            const formattedDate = formatDate(currentDate);
+
+                            let returnedDate = document.getElementById("returnedDate");
+                            returnedDate.textContext = formattedDate;
+
                             // console.log(response);
 
                             Swal.fire(
-                                response,
+                                "returned!",
                                 'Your have returned this.',
                                 'success'
                             )
@@ -120,11 +156,6 @@ try {
                             // window.location.href = window.location.href;
 
                         },
-
-                         error: function (request, status, error) {
-                                // alert(request.responseText);
-                                console.log(request);
-                          }
 
                     });
 

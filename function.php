@@ -15,4 +15,16 @@ function currentDate()
    return date('Y-m-d H:i:s');
 
 }
+
+function calcuateFine($day)
+{
+   $fine = $day - 3;
+
+   if($fine < 0)
+   {
+      return 0;
+   }
+
+   return ceil($fine);
+}
 ?>

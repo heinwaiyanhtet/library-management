@@ -39,7 +39,10 @@ if($validationMessage == '')
     foreach ($users as $user) {
 
         $_SESSION['user_id'] = $user['userName']; 
+        
         $_SESSION['id'] = $user['id']; 
+
+        $_SESSION['role'] = $user['role'];
 
         header('location:index.php'); 
 

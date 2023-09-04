@@ -1,9 +1,8 @@
 <!-- 
 
-    borrow ငှားထားတဲ့  userIdကို update လုပ်ရန်ကျန်ရှိ
+    borrow ငှားထားတဲ့  userId ကို update လုပ်ရန်ကျန်ရှိ
 
- -->
-
+--> 
 <?php
     include 'database_conn.php'; // Include your database connection file
 
